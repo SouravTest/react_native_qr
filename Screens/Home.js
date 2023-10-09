@@ -13,6 +13,10 @@ const Home = ({ navigation }) => {
         <Text style={styles.btninner}> <AntDesign name="qrcode" size={24} color="black" /> Show</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Create")}>
+        <Text style={styles.btninner}> <MaterialCommunityIcons name="qrcode-plus" size={24} color="black" /> Create</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Scan")}>
         <Text style={styles.btninner}> <MaterialCommunityIcons name="qrcode-scan" size={24} color="black" /> Scan</Text>
       </TouchableOpacity>
