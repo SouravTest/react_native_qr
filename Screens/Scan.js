@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, SafeAreaView } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  SafeAreaView,
+  Alert,
+} from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 const Scan = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -9,13 +16,13 @@ const Scan = () => {
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === "granted");
     };
 
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
@@ -27,24 +34,25 @@ const Scan = () => {
     return <Text>No access to camera</Text>;
   }
 
-
   return (
     <SafeAreaView style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      {scanned && (
+        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+      )}
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Scan
+export default Scan;
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent:'space-between'
-  }
-})
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+});

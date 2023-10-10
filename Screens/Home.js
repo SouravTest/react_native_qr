@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, SafeAreaView,TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Button, SafeAreaView,TouchableOpacity,Image } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -6,20 +6,35 @@ import { AntDesign } from '@expo/vector-icons';
 const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Home</Text>
+          <Image
+            style={{
+              width: "100%",
+              height: 220,
+              margin:5,
+              resizeMode: "contain",
+            }}
+            source={require("../assets/ok.png")}
+          />
 
       <View style={styles.box}>
-      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Show")}>
-        <Text style={styles.btninner}> <AntDesign name="qrcode" size={24} color="black" /> Show</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Show")}>
+          <Text style={styles.btninner}> <AntDesign name="qrcode" size={20} color="black" />  Show</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Create")}>
-        <Text style={styles.btninner}> <MaterialCommunityIcons name="qrcode-plus" size={24} color="black" /> Create</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Create")}>
+          <Text style={styles.btninner}> <MaterialCommunityIcons name="qrcode-plus" size={20} color="black" />  Create</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Scan")}>
-        <Text style={styles.btninner}> <MaterialCommunityIcons name="qrcode-scan" size={24} color="black" /> Scan</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Scan")}>
+          <Text style={styles.btninner}> <MaterialCommunityIcons name="qrcode-scan" size={20} color="black" />  Scan</Text>
+        </TouchableOpacity>
+
+
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Attendence")}>
+          <Text style={styles.btninner}> <MaterialCommunityIcons name="barcode-scan" size={20} color="black" />  Attendence</Text>
+        </TouchableOpacity>
+
+      
       </View>
 
       {/* <Button title="Scan" onPress={() => navigation.navigate("Scan")} /> */}
@@ -33,7 +48,8 @@ export default Home;
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    flexDirection:"column"
+    flexDirection:"column",
+    backgroundColor:"white"
   },
   box:{
 
@@ -49,7 +65,15 @@ const styles = StyleSheet.create({
   },
   btninner:{
     textAlign:"center",
-    fontSize:16,
+    fontSize:17,
     fontWeight:"bold",
+  },
+  title:{
+    fontFamily:"monospace",
+    fontSize:17,
+    color:"green",
+    alignItems:"center",
+    alignSelf:"center",
+    margin:10
   }
 });
