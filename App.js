@@ -6,6 +6,7 @@ import Home from "./Screens/Home";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import CreateQr from "./Screens/CreateQr";
+import Attendence from "./Screens/Attendence";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="Scan" component={Scan} />
         <Stack.Screen name="Show" component={Show} />
         <Stack.Screen name="Create" component={CreateQr} />
+        <Stack.Screen name="Attendence" component={Attendence} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
