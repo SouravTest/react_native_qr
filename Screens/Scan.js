@@ -36,6 +36,7 @@ const Scan = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>QR & BAR Code scanner</Text>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
@@ -54,5 +55,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+  },
+  title: {
+    fontFamily: "monospace",
+    fontSize: 17,
+    color: "green",
+    alignItems: "center",
+    alignSelf: "center",
+    margin: 1,
   },
 });

@@ -11,8 +11,10 @@ import React, { useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 
 const CreateQr = () => {
+  let logoFromFile = require("../assets/adaptive-icon.png");
   const [data, setData] = useState("");
   const [show, setShow] = useState(false);
+  const [data2, setData2] = useState("");
 
   const handleChange = (text) => {
     if (text === "") {
@@ -28,12 +30,13 @@ const CreateQr = () => {
       Alert.alert("Enter Data 2");
     } else {
       setShow(true);
+      setData2(data);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Generate Qr code</Text>
+      <Text style={styles.title}>Generate Qr code</Text>
       <TextInput
         style={styles.inp}
         placeholder="Enter...."
@@ -43,11 +46,11 @@ const CreateQr = () => {
         <Text style={styles.btninner}>Generate</Text>
       </TouchableOpacity>
 
-    <View style={styles.qr}>
-    {show && <QRCode value={data} />}
-    </View>
+      <View style={styles.qr}>
+        {show && <QRCode value={data} logo={logoFromFile} logoSize={20} backgroundColor="white"/>}
+      </View>
 
-      <Text style={{padding:10}}>QR CODE FOR : {data}</Text>
+      <Text style={{ padding: 10 }}>QR CODE FOR : {data2}</Text>
     </SafeAreaView>
   );
 };
@@ -77,10 +80,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  qr:{
+  qr: {
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
+    margin: 10,
+  },
+  title:{
+    fontFamily:"monospace",
+    fontSize:17,
+    color:"green",
+    alignItems:"center",
+    alignSelf:"center",
     margin:10
   }
 });

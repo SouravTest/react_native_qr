@@ -30,8 +30,8 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
 
 
-        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Attendence")}>
-          <Text style={styles.btninner}> <MaterialCommunityIcons name="barcode-scan" size={20} color="black" />  Attendence</Text>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Attendance")}>
+          <Text style={styles.btninner}> <MaterialCommunityIcons name="barcode-scan" size={20} color="black" />  Attendance</Text>
         </TouchableOpacity>
 
       
