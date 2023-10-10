@@ -3,6 +3,7 @@ import React, { useRef ,useState,useEffect} from "react";
 import QRCode from "react-native-qrcode-svg";
 import ViewShot from "react-native-view-shot";
 import * as MediaLibrary from 'expo-media-library';
+import { shareAsync } from 'expo-sharing';
 
 
 const Show = () => {
@@ -35,6 +36,14 @@ const Show = () => {
 
   };
 
+
+  const handleShare = async()=>{
+    const result = await viewShotRef.current.capture();
+    shareAsync(result).then(() => {
+      // setPhoto(undefined);
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Qr</Text>
@@ -48,6 +57,10 @@ const Show = () => {
 </ViewShot>
       <TouchableOpacity style={styles.button} onPress={handleDownload}>
         <Text style={styles.buttonText}>Download QR Code</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleShare}>
+        <Text style={styles.buttonText}>Share QR Code</Text>
       </TouchableOpacity>
     </View>
   );
