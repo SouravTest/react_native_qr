@@ -19,6 +19,10 @@
           "expo-image-picker",
           {
             "photosPermission": "The app accesses your photos to Scan from file"
+          },
+          "expo-location",
+          {
+            "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location for attendance."
           }
         ]
       ]

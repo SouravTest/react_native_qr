@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import axios from "axios";
+import * as Location from "expo-location";
 
 const Attendence = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -17,6 +18,11 @@ const Attendence = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Processing...");
 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [loactionPermission, setLoactionPermission] = useState(null);
+
+  //permission for camera
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -26,6 +32,31 @@ const Attendence = () => {
     getBarCodeScannerPermissions();
   }, []);
 
+  //permission for location
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        setLoactionPermission(false);
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLoactionPermission(true);
+      setLocation(location);
+    })();
+  }, []);
+
+  //location details
+  let text = "Waiting..";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
+  //if scaned
   const handleBarCodeScanned = async ({ type, data }) => {
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
 
@@ -80,12 +111,15 @@ const Attendence = () => {
       ) : scanned ? (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>{message}</Text>
+          <Text style={styles.paragraph}>{text}</Text>
         </View>
-      ) : (
+      ) : loactionPermission === true ? (
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
+      ) : (
+        <Text style={styles.paragraph}>{text}</Text>
       )}
     </SafeAreaView>
   );
