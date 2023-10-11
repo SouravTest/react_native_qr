@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button, SafeAreaView,TouchableOpacity,Image } f
 import React from "react";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 
 const Home = ({ navigation }) => {
   return (
@@ -34,7 +35,11 @@ const Home = ({ navigation }) => {
           <Text style={styles.btninner}> <MaterialCommunityIcons name="barcode-scan" size={20} color="black" />  Attendance</Text>
         </TouchableOpacity>
 
-      
+            
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Device")}>
+          <Text style={styles.btninner}> <Octicons name="device-mobile" size={20} color="black" />  My Device</Text>
+        </TouchableOpacity>
+
       </View>
 
       {/* <Button title="Scan" onPress={() => navigation.navigate("Scan")} /> */}
