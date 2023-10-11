@@ -8,9 +8,12 @@ import {
   Alert,
   Clipboard,
   Linking,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const Scan = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -51,6 +54,27 @@ const Scan = () => {
     Linking.openURL(data);
   };
 
+  const fromFile = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      quality: 1,
+    });
+
+    //console.log(result.assets[0].uri);
+    if(result.assets[0].uri && result.assets[0].uri!=''){
+      let decodedBarcodeImage = await BarCodeScanner.scanFromURLAsync(result.assets[0].uri);
+      // Handle result data
+     // console.log(decodedBarcodeImage);
+      const barcode = decodedBarcodeImage[0];
+      const data = barcode.data; // "upi://pay?pa=8670029376@okbizaxis&pn=Sourav%20tech&mc=7372&aid=uGICAgIDt0qnAAQ&tr=BCR2DN6T2X4IX3R2"
+      const type = barcode.type; // 256
+      setScanned(true);
+      setData(data);
+      setType(type);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>QR & BAR Code scanner</Text>
@@ -64,16 +88,29 @@ const Scan = () => {
           <Text style={styles.datainner}>Code type : {type}</Text>
           <Text style={styles.datainner}>Data : {data}</Text>
           <View style={styles.buttonContainer}>
-            <Button style={styles.btn} title="Copy to Clipboard" onPress={copyToClipboard} />
+            <Button
+              style={styles.btn}
+              title="Copy to Clipboard"
+              onPress={copyToClipboard}
+            />
             <Button style={styles.btn} title="Open Link" onPress={openLink} />
           </View>
         </View>
       ) : (
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
+        <>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+          <TouchableOpacity
+            onPress={fromFile}
+            style={{ padding: 10, backgroundColor: "yellow",alignItems:"center",alignContent:"center" }}
+          >
+            <Text style={{alignItems:"center",alignContent:"center"}}>Scan from file </Text>
+          </TouchableOpacity>
+        </>
       )}
+
       {scanned && (
         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
       )}
@@ -111,9 +148,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 20,
   },
-  btn:{
-    backgroundColor: 'green',
+  btn: {
+    backgroundColor: "green",
     padding: 10,
     borderRadius: 5,
-  }
+  },
 });

@@ -15,6 +15,10 @@
           "expo-barcode-scanner",
           {
             "cameraPermission": "Allow $(PRODUCT_NAME) to access camera for scan qr."
+          },
+          "expo-image-picker",
+          {
+            "photosPermission": "The app accesses your photos to Scan from file"
           }
         ]
       ]
