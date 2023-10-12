@@ -30,7 +30,7 @@ const DeviceDetails = () => {
        ndata['ipAddress'] = await Network.getIpAddressAsync();
        const networkState = await Network.getNetworkStateAsync();
        setNetworkState(networkState);
-       console.log(networkState);
+      // console.log(networkState);
       setNet(ndata);
     };
 

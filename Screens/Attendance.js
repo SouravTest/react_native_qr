@@ -48,7 +48,7 @@ const Attendence = () => {
         setLoactionPermission(false);
         return;
       }
-      //get location
+
       let location = await Location.getCurrentPositionAsync({});
       setLoactionPermission(true);
       setLocation(location);
@@ -58,30 +58,24 @@ const Attendence = () => {
       if(latitude && longitude){find();}
       
     })();
-  }, []);
+  }, [latitude,longitude]);
 
   //location details
-  let text = "Waiting..";
+  let text = "Waiting for location..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
-    text = JSON.stringify(location);
-    if (text.coords) {
-      console.log(text.coords);
-    }
-    //setTstamp(text.timestamp);
-    // setLatitude(text.coords.latitude);
-    // setLongitude(text.coords.longitude);
-    // find();
+    text = JSON.stringify(location); 
+     // console.log(text.coords);
   }
 
-  //get location details using longitude and latitude
+  //find scan from which location
   const find = async () => {
     const place = await Location.reverseGeocodeAsync({ longitude, latitude });
 
     if (place != "") {
       // Do something with the place object, such as displaying it on a map.
-      console.log(place);
+      //console.log(place);
       setPlace(JSON.stringify(place));
     } else {
       // The place could not be found.
@@ -92,14 +86,20 @@ const Attendence = () => {
   //if scaned
   const handleBarCodeScanned = async ({ type, data }) => {
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-
     //send to server
     try {
       setIsLoading(true);
-      const data = { ...location, ...place,uid };
-      const response = await axios.get(
-        "https://mmg.wjy.mybluehostin.me/qr.php",
-        data,
+      const serverData =   {
+        uid: uid,
+        tstamp: tstamp,
+        longitude: longitude,
+        latitude: latitude,
+        place: place,
+        data: data
+      };
+      const response = await axios.post(
+        "https://mmg.wjy.mybluehostin.me/qr.php",  //replace to data 
+        serverData,
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -140,7 +140,8 @@ const Attendence = () => {
       <Text style={styles.title}>SCAN ATTENDENCE QR</Text>
       {isLoading ? (
         <View style={styles.indicatorContainer}>
-          <ActivityIndicator size="large" color="#00ff00" />
+         <Text> <ActivityIndicator size="large" color="#00ff00" /> 
+         Processing place wait ...</Text>
         </View>
       ) : scanned ? (
         <View style={styles.messageContainer}>
