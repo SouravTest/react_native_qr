@@ -22,6 +22,13 @@ const Attendence = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [loactionPermission, setLoactionPermission] = useState(null);
 
+  //for backen send
+  const [uid, setUid] = useState("123");
+  const [tstamp, setTstamp] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [place, setPlace] = useState("");
+
   //permission for camera
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -41,10 +48,15 @@ const Attendence = () => {
         setLoactionPermission(false);
         return;
       }
-
+      //get location
       let location = await Location.getCurrentPositionAsync({});
       setLoactionPermission(true);
       setLocation(location);
+      setTstamp(location.timestamp);
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
+      if(latitude && longitude){find();}
+      
     })();
   }, []);
 
@@ -54,7 +66,28 @@ const Attendence = () => {
     text = errorMsg;
   } else if (location) {
     text = JSON.stringify(location);
+    if (text.coords) {
+      console.log(text.coords);
+    }
+    //setTstamp(text.timestamp);
+    // setLatitude(text.coords.latitude);
+    // setLongitude(text.coords.longitude);
+    // find();
   }
+
+  //get location details using longitude and latitude
+  const find = async () => {
+    const place = await Location.reverseGeocodeAsync({ longitude, latitude });
+
+    if (place != "") {
+      // Do something with the place object, such as displaying it on a map.
+      console.log(place);
+      setPlace(JSON.stringify(place));
+    } else {
+      // The place could not be found.
+      console.log("The place could not be found.");
+    }
+  };
 
   //if scaned
   const handleBarCodeScanned = async ({ type, data }) => {
@@ -63,6 +96,7 @@ const Attendence = () => {
     //send to server
     try {
       setIsLoading(true);
+      const data = { ...location, ...place,uid };
       const response = await axios.get(
         "https://mmg.wjy.mybluehostin.me/qr.php",
         data,
@@ -111,7 +145,9 @@ const Attendence = () => {
       ) : scanned ? (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>{message}</Text>
-          <Text style={styles.paragraph}>{text}</Text>
+          <Text style={styles.paragraph}>
+            {/* {text} */}
+            {place}</Text>
         </View>
       ) : loactionPermission === true ? (
         <BarCodeScanner
