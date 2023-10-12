@@ -55,19 +55,18 @@ const Attendence = () => {
       setTstamp(location.timestamp);
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
-      if (latitude && longitude) {
-        find();
-      }
+      if(latitude && longitude){find();}
+      
     })();
-  }, [latitude, longitude]);
+  }, [latitude,longitude]);
 
   //location details
   let text = "Waiting for location..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
-    //text = JSON.stringify(location);
-    // console.log(text.coords);
+    text = JSON.stringify(location); 
+    //  console.log(text.coords);
   }
 
   //find scan from which location
@@ -76,7 +75,7 @@ const Attendence = () => {
 
     if (place != "") {
       // Do something with the place object, such as displaying it on a map.
-      //console.log(place);
+     // console.log(place);
       setPlace(JSON.stringify(place));
     } else {
       // The place could not be found.
@@ -90,18 +89,17 @@ const Attendence = () => {
     //send to server
     try {
       setIsLoading(true);
-      const serverData = {
+      const serverData =   {
         uid: uid,
         tstamp: tstamp,
         longitude: longitude,
         latitude: latitude,
         place: place,
-        location: JSON.stringify(location),
-        data: data,
+        location:location,
+        data: data
       };
-
       const response = await axios.post(
-        "https://mmg.wjy.mybluehostin.me/qr.php", //replace to data
+        "https://mmg.wjy.mybluehostin.me/qr.php",  //replace to data 
         serverData,
         {
           headers: {
@@ -112,21 +110,20 @@ const Attendence = () => {
       );
 
       const Result = response.data;
-      //console.log(Result);
 
       if (Result.success == true) {
         //Alert.alert(Result.message, Result.total.toString());
         setMessage(Result.message + Result.total.toString());
         setScanned(true);
       } else {
-        Alert.alert("Alert", Result.message);
+        // Alert.alert("Alert", Result.message);
         setMessage("Try again", Result.message);
         setScanned(false);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setScanned(false);
-      Alert.alert("Server error: ", err);
+      Alert.alert("Server error: ", err.message);
     } finally {
       setIsLoading(false);
     }
@@ -144,19 +141,15 @@ const Attendence = () => {
       <Text style={styles.title}>SCAN ATTENDENCE QR</Text>
       {isLoading ? (
         <View style={styles.indicatorContainer}>
-          <Text>
-            {" "}
-            <ActivityIndicator size="large" color="#00ff00" />
-            Processing pleace wait ...
-          </Text>
+         <Text> <ActivityIndicator size="large" color="#00ff00" /> 
+         Processing place wait ...</Text>
         </View>
       ) : scanned ? (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>{message}</Text>
           <Text style={styles.paragraph}>
-            {/* {text} */}
-            {place}
-          </Text>
+            {text}
+            {place}</Text>
         </View>
       ) : loactionPermission === true ? (
         <BarCodeScanner
