@@ -16,7 +16,7 @@ const Attendence = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("Intializing...");
+  const [message, setMessage] = useState("Processing...");
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -51,7 +51,6 @@ const Attendence = () => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLoactionPermission(true);
-      setMessage('Getting location data ...')
       setLocation(location);
       setTstamp(location.timestamp);
       setLatitude(location.coords.latitude);
@@ -74,15 +73,13 @@ const Attendence = () => {
   //find scan from which location
   const find = async () => {
     const place = await Location.reverseGeocodeAsync({ longitude, latitude });
-    setMessage('Getting location Success ...')
+
     if (place != "") {
       // Do something with the place object, such as displaying it on a map.
       //console.log(place);
-      setMessage('Verify Location ....')
       setPlace(JSON.stringify(place));
     } else {
       // The place could not be found.
-      setMessage('Location not found....')
       console.log("The place could not be found.");
     }
   };
@@ -93,7 +90,6 @@ const Attendence = () => {
     //send to server
     try {
       setIsLoading(true);
-      setMessage('Checking in server ...')
       const serverData = {
         uid: uid,
         tstamp: tstamp,
@@ -143,20 +139,19 @@ const Attendence = () => {
     return <Text>No access to camera</Text>;
   }
 
-  // if (loactionPermission === null) {
-  //   return <Text><ActivityIndicator size="large" color="red" /> Please grant location permissions</Text>;
-  // }
+  if (loactionPermission === null) {
+    return <Text><ActivityIndicator size="large" color="red" /> Please grant location permissions</Text>;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>SCAN ATTENDENCE QR</Text>
-      <Text style={styles.message}>{message}</Text>
       {isLoading ? (
         <View style={styles.indicatorContainer}>
           <Text>
             {" "}
             <ActivityIndicator size="large" color="#00ff00" />
-            Processing plece wait ...
+            Processing pleace wait ...
           </Text>
         </View>
       ) : scanned ? (
@@ -180,7 +175,6 @@ const Attendence = () => {
 };
 
 export default Attendence;
-
 
 const styles = StyleSheet.create({
   container: {

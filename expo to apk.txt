@@ -1,0 +1,24 @@
+
+https://docs.expo.dev/build/setup/
+
+https://expo.dev/accounts/sktestexpo
+
+ID : sktestexpo
+pass : 12345678@#
+
+npm install -g eas-cli
+
+eas login
+eas whoami
+
+eas build:configure
+
+eas build --platform android
+
+https://www.youtube.com/watch?v=3j9DcRCxrFg
+https://github.com/google/bundletool/releases
+
+
+
+for credientials like SHA1
+eas credentials

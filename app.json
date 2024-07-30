@@ -2,8 +2,8 @@
   "expo": {
     "name": "All about Qr",
     "slug": "qrScaner",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "version": "2.0.0",
+    "orientation": "portrait", 
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -37,10 +37,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.allaboutqr.souravtech",
+      "versionCode":1,
+      "googleServicesFile": "./google-services.json"
     },
+    "plugins": [
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8c08687f-a7b7-4a40-afee-5d9d028e46ef"
+      }
     }
   }
 }

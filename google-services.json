@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "827472152030",
+    "project_id": "allaboutqr",
+    "storage_bucket": "allaboutqr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827472152030:android:f77c9ea458b8a55734c94f",
+        "android_client_info": {
+          "package_name": "com.allaboutqr.souravtech"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjtkTC-8xjWcOHay4WvtvlzPjzNz6kF-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

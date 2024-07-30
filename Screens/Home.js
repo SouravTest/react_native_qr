@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 
+
 const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -33,6 +34,10 @@ const Home = ({ navigation }) => {
 
         <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Attendance")}>
           <Text style={styles.btninner}> <MaterialCommunityIcons name="barcode-scan" size={20} color="black" />  Attendance</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Front")}>
+          <Text style={styles.btninner}> <AntDesign name="idcard" size={20} color="black" />  Front &nbsp; Attendance</Text>
         </TouchableOpacity>
 
             

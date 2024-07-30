@@ -8,6 +8,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import CreateQr from "./Screens/CreateQr";
 import Attendance from "./Screens/Attendance";
 import DeviceDetails from "./Screens/DeviceDetails";
+import FrontAtt from "./Screens/FrontAtt";
+
+// import { initializeApp } from 'expo-firebase-app';
+// // rr
+
+// const app = initializeApp(firebaseConfig);
+
+// if (app) {
+//   console.log('Firebase initialized successfully!');
+// } else {
+//   console.error('Error initializing Firebase.');
+// }
 
 const Stack = createStackNavigator();
 
@@ -21,6 +33,7 @@ export default function App() {
         <Stack.Screen name="Create" component={CreateQr} />
         <Stack.Screen name="Attendance" component={Attendance} />
         <Stack.Screen name="Device" component={DeviceDetails} />
+        <Stack.Screen name="Front" component={FrontAtt} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
