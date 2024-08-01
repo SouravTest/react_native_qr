@@ -33,7 +33,15 @@ export default function App() {
         <Stack.Screen name="Create" component={CreateQr} />
         <Stack.Screen name="Attendance" component={Attendance} />
         <Stack.Screen name="Device" component={DeviceDetails} />
-        <Stack.Screen name="Front" component={FrontAtt} />
+        <Stack.Screen
+          name="Front"
+          component={FrontAtt}
+          options={{
+            // headerLeft: null,  //hide arrow
+            // headerTitle: '', // This hides the back button
+            headerShown: false, 
+          }}
+        />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

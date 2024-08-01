@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, ActivityIndicator, Alert, Image, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Button, ActivityIndicator, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Modal from 'react-native-modal';
 import * as Location from 'expo-location';
-import axios from 'axios';
+import axios from 'axios'; // For making HTTP requests
 import * as Device from 'expo-device';
-import { Audio } from 'expo-av';
 
 export default function FrontAtt() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -22,25 +21,6 @@ export default function FrontAtt() {
   const [deviceName, setDeviceName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [locationPermissionRequested, setLocationPermissionRequested] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const defaultImage = require('../assets/default_user_image.png'); // Fallback image
-  const wrongImage = require('../assets/wrong.png'); // Fallback image
-  const rightImage = require('../assets/right.png'); // Fallback image
-
-  const playSound = async (soundFile) => {
-    const { sound } = await Audio.Sound.createAsync(soundFile);
-    await sound.playAsync();
-  };
-
-
-  // Update date and time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   // Request location permission
   const requestLocationPermission = async () => {
@@ -129,7 +109,7 @@ export default function FrontAtt() {
       setModalVisible(false);
       setScanned(false);
       setProcessingVisible(false); // Hide processing modal
-    }, 2000); // Increase timeout to ensure user sees the response
+    }, 5000); // Increase timeout to ensure user sees the response
   };
 
   // Post scan data to the PHP server
@@ -152,15 +132,13 @@ export default function FrontAtt() {
       });
 
       const result = await response.json();
-      //console.log(result);
       if (result.code === 1) {
         setUserDetails(result.userDetails); // Set user details on success
+        console.log(result)
         setModalMessage('Entry success');
-        await playSound(require('../assets/mp3/right.wav')); 
       } else {
         setModalMessage(result.message || 'Failed to process entry');
         setUserDetails(null);
-        await playSound(require('../assets/mp3/wrong.wav')); 
       }
       setModalVisible(true);
     } catch (error) {
@@ -177,60 +155,40 @@ export default function FrontAtt() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <Text>Getting location data, please wait...</Text>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <Text>Getting location data, please wait...</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
     );
   }
 
   if (hasCameraPermission === null || hasLocationPermission === null) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.permissionContainer}>
-          <Text>Requesting for permissions...</Text>
-        </View>
-      </SafeAreaView>
-    );
+    return <View style={styles.container}><Text>Requesting for permissions...</Text></View>;
   }
-
   if (hasCameraPermission === false) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.permissionContainer}>
-          <Text>No access to camera</Text>
-          <Button title="Request Camera Permission" onPress={requestCameraPermission} />
-        </View>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <Text>No access to camera</Text>
+        <Button title="Request Camera Permission" onPress={requestCameraPermission} />
+      </View>
     );
   }
-
   if (hasLocationPermission === false) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.permissionContainer}>
-          <Text>No access to location</Text>
-          <Button title="Request Location Permission" onPress={requestLocationPermission} />
-        </View>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <Text>No access to location</Text>
+        <Button title="Request Location Permission" onPress={requestLocationPermission} />
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.dateTime}>{currentTime.toLocaleString()}</Text>
-      </View>
-      <View style={styles.content}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-          type={cameraType}
-        />
-        <Text style={styles.scanText}>{'[ SCAN YOUR ID CARD ]'} </Text>
-      </View>
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+        type={cameraType}
+      />
       <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}
@@ -242,25 +200,13 @@ export default function FrontAtt() {
         <View style={styles.modalContent}>
           {userDetails ? (
             <>
-                <Image source={rightImage} style={styles.modalImage} />
-                <Image
-                  source={{ uri: `http://sankrailachighschool.org/sms/student_image/${userDetails.image}` }}
-                  style={styles.userImage}
-                  onError={(e) => console.error('Image loading error:', e.nativeEvent.error)} // Log errors
-                  defaultSource={defaultImage} // Use a fallback image for iOS
-                />
-              <Text style={styles.modalMessage}>NAME : {userDetails.name}</Text>
-              <Text style={styles.modalMessage}>STU ID : {userDetails.stuid}</Text>
-              <Text style={styles.modalMessage}>CLASS : {userDetails.class}</Text>
-              <Text style={styles.modalMessage}>SECTION : {userDetails.section}</Text>
-              <Text style={styles.modalMessage}>ROLL : {userDetails.roll}</Text>
-              <Text style={styles.modalMessage}>SESSION : {userDetails.session}</Text>
+              <Image source={{ uri: 'http://sankrailachighschool.org/sms/student_image/'+userDetails.image }} style={styles.userImage} />
+              <Text style={styles.modalMessage}>Name: {userDetails.name}</Text>
+              <Text style={styles.modalMessage}>ID: {userDetails.id}</Text>
+              <Text style={styles.modalMessage}>STU ID: {userDetails.stuid}</Text>
             </>
           ) : (
-            <>
-             <Image source={wrongImage} style={styles.modalImage} />
             <Text style={styles.modalMessage}>{modalMessage}</Text>
-            </>
           )}
         </View>
       </Modal>
@@ -274,62 +220,25 @@ export default function FrontAtt() {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       </Modal>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Design & developed by TMIS.CO.IN</Text>
-      </View>
-    </SafeAreaView>
+      {/* <Button
+        title="Flip Camera"
+        onPress={() => {
+          setCameraType(prevType =>
+            prevType === Camera.Constants.Type.back
+              ? Camera.Constants.Type.front
+              : Camera.Constants.Type.back
+          );
+        }}
+      /> */}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-  },
-  loadingContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  permissionContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    padding: 10,
-    backgroundColor: '#f8f8f8',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    alignItems: 'center',
-  },
-  dateTime: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scanText: {
-    color: 'red',
-    textAlign: 'center',
-    marginVertical: 20,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  footer: {
-    padding: 10,
-    backgroundColor: '#f8f8f8',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
-    alignItems: 'center',
-    textShadowColor:"blue"
-  },
-  footerText: {
-    fontSize: 14,
-    color: '#333',
   },
   modal: {
     justifyContent: 'center',
@@ -346,14 +255,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   userImage: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     borderRadius: 50,
     marginBottom: 10,
   },
-  modalImage:{
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-  }
 });
