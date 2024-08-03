@@ -53,6 +53,12 @@ const DeviceDetails = () => {
       <Text>Network state: {networkState.type}</Text>
       <Text>Is connected: {networkState.isConnected === true ? 'Yes':'no'}</Text>
       <Text>Is internet reachable: {networkState.isInternetReachable=== true ? 'Yes':'no'}</Text>
+
+
+      <Text>------------Developer : SOURAV KARMAKAR---------------------</Text>
+      
+      <Text>Version : 2.3.5 (4)</Text>
+  
     </View>
   );
 };

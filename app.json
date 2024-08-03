@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "All about Qr",
+    "name": "Tmis Attendance",
     "slug": "qrScaner",
-    "version": "2.0.0",
+    "version": "2.3.5",
     "orientation": "portrait", 
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -39,7 +39,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.allaboutqr.souravtech",
-      "versionCode":1,
+      "versionCode":4,
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [

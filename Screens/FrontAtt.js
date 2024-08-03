@@ -244,7 +244,7 @@ export default function FrontAtt() {
             <>
                 <Image source={rightImage} style={styles.modalImage} />
                 <Image
-                  source={{ uri: `http://sankrailachighschool.org/sms/student_image/${userDetails.image}` }}
+                  source={{ uri: `https://sankrailachighschool.org/sms/student_image/${userDetails.image}` }}
                   style={styles.userImage}
                   onError={(e) => console.error('Image loading error:', e.nativeEvent.error)} // Log errors
                   defaultSource={defaultImage} // Use a fallback image for iOS
@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
   dateTime: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginTop:20
   },
   content: {
     flex: 1,
